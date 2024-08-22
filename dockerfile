@@ -29,3 +29,4 @@ RUN make install
 #
 # RUN nix-shell
 # RUN cd /root 
+CMD diamondd
