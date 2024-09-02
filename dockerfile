@@ -2,18 +2,19 @@
 FROM ubuntu:xenial AS dmdv3_builder
 
 RUN apt-get update
-RUN apt-get install -y  git build-essential libtool autotools-dev autoconf pkg-config libssl-dev libboost-all-dev wget
+RUN apt-get install -y software-properties-common git build-essential libtool autotools-dev autoconf pkg-config libssl-dev libboost-all-dev wget
 WORKDIR /root
 RUN git clone https://github.com/DMDcoin/Diamond.git
 WORKDIR /root/Diamond
 COPY ubuntufiles/* /root/Diamond/
-RUN apt-get install software-properties-common -y
-RUN add-apt-repository ppa:bitcoin/bitcoin -y
-RUN apt-get install libdb4.8-dev libdb4.8++-dev bsdmainutils -y
+RUN add-apt-repository ppa:bitcoin/bitcoin -y && apt-get update
+RUN apt-get install libdb4.8-dev libdb4.8++-dev bsdmainutils openssl software-properties-common -y
 RUN ./autogen.sh --without-gui 
 RUN ./configure --without-gui
 RUN make
 RUN make install
+
+
 
 # RUN add-apt-repository ppa:bitcoin/bitcoin && apt-get update && apt-get install libdb4.8-dev libdb4.8++-dev
 # RUN ./install_berkley.sh
@@ -29,4 +30,4 @@ RUN make install
 #
 # RUN nix-shell
 # RUN cd /root 
-CMD diamondd
+CMD /root/Diamond/init.sh && diamondd
