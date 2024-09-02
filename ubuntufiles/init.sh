@@ -5,6 +5,6 @@
 # only if file /root/.DMDV3/diamond.conf is empty
 if [ ! -s /root/.DMDV3/diamond.conf ]; then
   # this command will create the .DMDV3 directory and the diamond.conf file
-  diamondd | true  
+  diamondd 2>&1 /dev/null | true  
   echo -e "rpcuser=diamondrpc\nrpcpassword=$(openssl rand -hex 32)" > /root/.DMDV3/diamond.conf
 fi
